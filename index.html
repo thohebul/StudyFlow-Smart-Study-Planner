@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyFlow - Smart Study Planner</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+
+                <div>
+                    <h2>Study<span>Flow</span></h2>
+                    <small>Smart Study Planner</small>
+                </div>
+            </div>
+
+
+            <!-- NAVIGATION -->
+            <nav class="navigation">
+
+                <p class="menu-title">MAIN MENU</p>
+
+                <button class="nav-item active" data-section="dashboard">
+                    <span>📊</span>
+                    Dashboard
+                </button>
+
+                <button class="nav-item" data-section="subjects">
+                    <span>📚</span>
+                    Subjects
+                </button>
+
+                <button class="nav-item" data-section="tasks">
+                    <span>✅</span>
+                    Tasks
+                </button>
+
+                <button class="nav-item" data-section="schedule">
+                    <span>🗓️</span>
+                    Schedule
+                </button>
+
+                <button class="nav-item" data-section="progress">
+                    <span>📈</span>
+                    Progress
+                </button>
+
+                <button class="nav-item" data-section="notes">
+                    <span>📝</span>
+                    Notes
+                </button>
+
+
+                <p class="menu-title">OTHER</p>
+
+                <button class="nav-item" data-section="settings">
+                    <span>⚙️</span>
+                    Settings
+                </button>
+
+            </nav>
+
+
+            <!-- ================= ACCOUNT CARD ================= -->
+            <div class="sidebar-bottom">
+
+                <div class="account-card" id="accountCard">
+
+                    <!-- JavaScript will render account here -->
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main class="main-content">
+
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+
+                <div class="page-title">
+
+                    <h1 id="pageTitle">Dashboard</h1>
+
+                    <p id="currentDate"></p>
+
+                </div>
+
+
+                <div class="top-actions">
+
+                    <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                        🌙
+                    </button>
+
+
+                    <button class="top-profile" id="topProfileBtn">
+
+                        <div class="avatar" id="topAvatar">
+                            G
+                        </div>
+
+                        <div class="profile-info">
+
+                            <strong id="topStudentName">
+                                Guest User
+                            </strong>
+
+                            <span id="topStudentRole">
+                                Guest Mode
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= DASHBOARD ================= -->
+            <section class="page-section active-section" id="dashboard">
+
+                <div class="welcome">
+
+                    <div>
+
+                        <span class="welcome-small">
+                            Good to see you! 👋
+                        </span>
+
+                        <h2>
+                            Welcome back,
+                            <span id="welcomeName">Guest User</span>!
+                        </h2>
+
+                        <p>
+                            Let's make today productive and achieve your study goals.
+                        </p>
+
+                    </div>
+
+
+                    <button class="primary-btn" onclick="openTaskModal()">
+                        + Add Task
+                    </button>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            📚
+                        </div>
+
+                        <div>
+                            <span>Total Subjects</span>
+                            <h3 id="totalSubjects">0</h3>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            ✅
+                        </div>
+
+                        <div>
+                            <span>Completed Tasks</span>
+                            <h3 id="completedTasks">0</h3>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon orange">
+                            ⏳
+                        </div>
+
+                        <div>
+                            <span>Pending Tasks</span>
+                            <h3 id="pendingTasks">0</h3>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+                            📈
+                        </div>
+
+                        <div>
+                            <span>Study Progress</span>
+                            <h3 id="overallProgress">0%</h3>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-grid">
+
+
+                    <!-- TODAY TASKS -->
+                    <div class="content-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>Today's Tasks</h3>
+
+                                <p>Your study tasks for today</p>
+
+                            </div>
+
+
+                            <button class="text-btn" onclick="showSection('tasks')">
+                                View All
+                            </button>
+
+                        </div>
+
+
+                        <div id="dashboardTasks" class="task-list"></div>
+
+                    </div>
+
+
+                    <!-- OVERALL PROGRESS -->
+                    <div class="content-card progress-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>Overall Progress</h3>
+
+                                <p>Your current study progress</p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="circle-progress">
+
+                            <div class="circle-inner">
+
+                                <strong id="circleProgress">0%</strong>
+
+                                <span>Completed</span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div id="dashboardSubjects" class="mini-subjects"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TODAY SCHEDULE -->
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>Today's Schedule</h3>
+
+                            <p>Your study routine</p>
+
+                        </div>
+
+
+                        <button class="text-btn" onclick="showSection('schedule')">
+                            Manage
+                        </button>
+
+                    </div>
+
+
+                    <div id="dashboardSchedule" class="schedule-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SUBJECTS ================= -->
+            <section class="page-section" id="subjects">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>My Subjects</h2>
+
+                        <p>Manage your subjects and learning progress.</p>
+
+                    </div>
+
+
+                    <button class="primary-btn" onclick="openSubjectModal()">
+                        + Add Subject
+                    </button>
+
+                </div>
+
+
+                <div class="subjects-grid" id="subjectsGrid"></div>
+
+            </section>
+
+
+            <!-- ================= TASKS ================= -->
+            <section class="page-section" id="tasks">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>Study Tasks</h2>
+
+                        <p>Organize and complete your daily study tasks.</p>
+
+                    </div>
+
+
+                    <button class="primary-btn" onclick="openTaskModal()">
+                        + Add Task
+                    </button>
+
+                </div>
+
+
+                <div class="filter-bar">
+
+                    <button class="filter-btn active" data-filter="all">
+                        All
+                    </button>
+
+                    <button class="filter-btn" data-filter="pending">
+                        Pending
+                    </button>
+
+                    <button class="filter-btn" data-filter="completed">
+                        Completed
+                    </button>
+
+
+                    <input
+                        type="text"
+                        id="taskSearch"
+                        placeholder="🔍 Search tasks..."
+                    >
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <div id="allTasks" class="full-task-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SCHEDULE ================= -->
+            <section class="page-section" id="schedule">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>Study Schedule</h2>
+
+                        <p>Plan your study time effectively.</p>
+
+                    </div>
+
+
+                    <button class="primary-btn" onclick="openScheduleModal()">
+                        + Add Schedule
+                    </button>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <div id="scheduleContainer" class="schedule-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PROGRESS ================= -->
+            <section class="page-section" id="progress">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>Study Progress</h2>
+
+                        <p>Track your learning progress.</p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress-overview">
+
+
+                    <div class="progress-big-card">
+
+                        <span>Overall Progress</span>
+
+                        <strong id="bigProgress">0%</strong>
+
+
+                        <div class="large-progress-bar">
+
+                            <div id="bigProgressBar"></div>
+
+                        </div>
+
+
+                        <p>
+                            Keep going! Every small step counts.
+                        </p>
+
+                    </div>
+
+
+                    <div class="progress-big-card">
+
+                        <span>Completed Tasks</span>
+
+                        <strong id="progressCompleted">0</strong>
+
+                        <p>Tasks completed so far</p>
+
+                    </div>
+
+
+                    <div class="progress-big-card">
+
+                        <span>Pending Tasks</span>
+
+                        <strong id="progressPending">0</strong>
+
+                        <p>Tasks remaining</p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-card chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>Weekly Study Overview</h3>
+
+                            <p>Your study activity this week</p>
+
+                        </div>
+
+                    </div>
+
+
+                    <canvas id="studyChart"></canvas>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>Subject Progress</h3>
+
+                            <p>Progress by subject</p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="progressSubjects"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= NOTES ================= -->
+            <section class="page-section" id="notes">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>My Notes</h2>
+
+                        <p>Save your important study notes.</p>
+
+                    </div>
+
+
+                    <button class="primary-btn" onclick="openNoteModal()">
+                        + Add Note
+                    </button>
+
+                </div>
+
+
+                <div class="notes-grid" id="notesGrid"></div>
+
+            </section>
+
+
+            <!-- ================= SETTINGS ================= -->
+            <section class="page-section" id="settings">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>Settings</h2>
+
+                        <p>Customize your study planner.</p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+
+                    <div class="setting-item">
+
+                        <div>
+
+                            <h3>Profile Name</h3>
+
+                            <p>
+                                Change your display name.
+                            </p>
+
+                        </div>
+
+
+                        <input
+                            type="text"
+                            id="studentNameInput"
+                            placeholder="Your name"
+                        >
+
+
+                        <button class="primary-btn" onclick="saveStudentName()">
+                            Save
+                        </button>
+
+                    </div>
+
+
+                    <div class="setting-item">
+
+                        <div>
+
+                            <h3>Dark Mode</h3>
+
+                            <p>
+                                Change the appearance of the website.
+                            </p>
+
+                        </div>
+
+
+                        <button class="theme-setting-btn" onclick="toggleTheme()">
+                            🌙 Toggle Theme
+                        </button>
+
+                    </div>
+
+
+                    <div class="setting-item danger-setting">
+
+                        <div>
+
+                            <h3>Clear All Study Data</h3>
+
+                            <p>
+                                Delete all subjects, tasks, schedules and notes.
+                            </p>
+
+                        </div>
+
+
+                        <button class="danger-btn" onclick="clearAllData()">
+                            Clear Data
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= LOGIN MODAL ================= -->
+    <div class="modal-overlay" id="loginModal">
+
+        <div class="modal auth-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>Welcome Back 👋</h2>
+
+                    <p class="modal-subtitle">
+                        Login to continue your study journey.
+                    </p>
+
+                </div>
+
+
+                <button onclick="closeModal('loginModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="loginForm">
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+
+                <button class="primary-btn full-btn" type="submit">
+                    Login
+                </button>
+
+            </form>
+
+
+            <p class="auth-switch">
+
+                Don't have an account?
+
+                <button onclick="switchToSignup()">
+                    Create Account
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SIGNUP MODAL ================= -->
+    <div class="modal-overlay" id="signupModal">
+
+        <div class="modal auth-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>Create Account ✨</h2>
+
+                    <p class="modal-subtitle">
+                        Create your StudyFlow account.
+                    </p>
+
+                </div>
+
+
+                <button onclick="closeModal('signupModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="signupForm">
+
+                <label>Your Name</label>
+
+                <input
+                    type="text"
+                    id="signupName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    id="signupEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="signupPassword"
+                    placeholder="Create a password"
+                    minlength="4"
+                    required
+                >
+
+
+                <label>Confirm Password</label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm your password"
+                    minlength="4"
+                    required
+                >
+
+
+                <button class="primary-btn full-btn" type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <p class="auth-switch">
+
+                Already have an account?
+
+                <button onclick="switchToLogin()">
+                    Login
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= PROFILE MODAL ================= -->
+    <div class="modal-overlay" id="profileModal">
+
+        <div class="modal profile-modal">
+
+            <div class="modal-header">
+
+                <h2>My Profile</h2>
+
+                <button onclick="closeModal('profileModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="profile-modal-content">
+
+                <div class="big-avatar" id="profileAvatar">
+                    G
+                </div>
+
+
+                <h3 id="profileName">
+                    Guest User
+                </h3>
+
+
+                <p id="profileEmail">
+                    Not logged in
+                </p>
+
+
+                <div class="profile-details">
+
+                    <div>
+
+                        <span>Account Type</span>
+
+                        <strong id="profileType">
+                            Guest Mode
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Total Subjects</span>
+
+                        <strong id="profileSubjects">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Total Tasks</span>
+
+                        <strong id="profileTasks">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="danger-btn profile-logout-btn"
+                    id="profileLogoutBtn"
+                    onclick="logoutUser()"
+                >
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TASK MODAL ================= -->
+    <div class="modal-overlay" id="taskModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h2>Add New Task</h2>
+
+                <button onclick="closeModal('taskModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="taskForm">
+
+                <label>Task Name</label>
+
+                <input
+                    type="text"
+                    id="taskName"
+                    placeholder="e.g. Complete JavaScript Array"
+                    required
+                >
+
+
+                <label>Subject</label>
+
+                <select id="taskSubject" required></select>
+
+
+                <label>Due Date</label>
+
+                <input
+                    type="date"
+                    id="taskDate"
+                    required
+                >
+
+
+                <label>Priority</label>
+
+                <select id="taskPriority">
+
+                    <option value="Low">Low</option>
+
+                    <option value="Medium" selected>
+                        Medium
+                    </option>
+
+                    <option value="High">
+                        High
+                    </option>
+
+                </select>
+
+
+                <button class="primary-btn full-btn" type="submit">
+                    Add Task
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SUBJECT MODAL ================= -->
+    <div class="modal-overlay" id="subjectModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h2>Add New Subject</h2>
+
+                <button onclick="closeModal('subjectModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="subjectForm">
+
+                <label>Subject Name</label>
+
+                <input
+                    type="text"
+                    id="subjectName"
+                    placeholder="e.g. JavaScript"
+                    required
+                >
+
+
+                <label>Subject Icon</label>
+
+                <input
+                    type="text"
+                    id="subjectIcon"
+                    placeholder="💻"
+                    maxlength="4"
+                >
+
+
+                <label>Progress (%)</label>
+
+                <input
+                    type="number"
+                    id="subjectProgress"
+                    min="0"
+                    max="100"
+                    value="0"
+                >
+
+
+                <button class="primary-btn full-btn" type="submit">
+                    Add Subject
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SCHEDULE MODAL ================= -->
+    <div class="modal-overlay" id="scheduleModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h2>Add Schedule</h2>
+
+                <button onclick="closeModal('scheduleModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="scheduleForm">
+
+                <label>Time</label>
+
+                <input
+                    type="time"
+                    id="scheduleTime"
+                    required
+                >
+
+
+                <label>Subject</label>
+
+                <select id="scheduleSubject" required></select>
+
+
+                <label>Topic</label>
+
+                <input
+                    type="text"
+                    id="scheduleTopic"
+                    placeholder="e.g. Functions"
+                    required
+                >
+
+
+                <button class="primary-btn full-btn" type="submit">
+                    Add Schedule
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= NOTE MODAL ================= -->
+    <div class="modal-overlay" id="noteModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h2>Add New Note</h2>
+
+                <button onclick="closeModal('noteModal')">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="noteForm">
+
+                <label>Note Title</label>
+
+                <input
+                    type="text"
+                    id="noteTitle"
+                    placeholder="e.g. JavaScript Notes"
+                    required
+                >
+
+
+                <label>Note Content</label>
+
+                <textarea
+                    id="noteContent"
+                    rows="7"
+                    placeholder="Write your note here..."
+                    required
+                ></textarea>
+
+
+                <button class="primary-btn full-btn" type="submit">
+                    Save Note
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TOAST ================= -->
+    <div class="toast" id="toast">
+
+        <span>✓</span>
+
+        <p id="toastMessage">
+            Saved successfully!
+        </p>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
